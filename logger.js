@@ -16,17 +16,12 @@ await db.run(`CREATE TABLE IF NOT EXISTS ${tableName} (
 
 
 
-const insert = async (type, message) => {
-	const stmt = await db.prepare(`INSERT INTO ${tableName} (type, message) VALUES ('${type}', '${message}')`);
-	return stmt.finalize();
+const insert = (type, message) => {
+	db.run(`INSERT INTO ${tableName} (type, message) VALUES ('${type}', '${message}')`);
 }
 
 
 export const logger = {
-	error: async (msg) => {
-		await insert('error', msg);
-	},
-	log: async (msg) => {
-		await insert('log', msg);
-	},
+	error: (msg) => insert('error', msg),
+	log: (msg) => insert('log', msg),
 }
