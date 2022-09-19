@@ -1,4 +1,4 @@
-import {} from 'dotenv/config'
+import 'dotenv/config'
 import { Command } from 'commander/esm.mjs'
 import {getCount, getData} from './db.service.js';
 import { prepareApiData } from './data.adapter.js';

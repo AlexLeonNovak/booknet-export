@@ -1,13 +1,13 @@
-import sqlite3 from 'sqlite3';
+import Database from 'better-sqlite3';
 
-const db = new sqlite3.Database('log.db');
+const db = new Database('log.db');
 
 const now = new Date();
 const pad = n => n.toString().padStart(2, '0');
 const tableName = `log_${now.getFullYear()}_${pad(now.getMonth() + 1)}_${pad(now.getDate())}`;
 
 
-await db.run(`CREATE TABLE IF NOT EXISTS ${tableName} (
+db.exec(`CREATE TABLE IF NOT EXISTS ${tableName} (
   id INTEGER PRIMARY KEY,
   type VARCHAR(8),
   message MEDIUMTEXT,
@@ -17,7 +17,7 @@ await db.run(`CREATE TABLE IF NOT EXISTS ${tableName} (
 
 
 const insert = (type, message) => {
-	db.run(`INSERT INTO ${tableName} (type, message) VALUES ('${type}', '${message}')`);
+	db.exec(`INSERT INTO ${tableName} (type, message) VALUES ('${type}', '${message}')`);
 }
 
 
