@@ -3,10 +3,25 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "start:s": "node index.js -s t1",
+    "build:exe": "nexe -i ./index.js --build --verbose --python python3 -o ./dist/booknet-export.exe",
+    "build": "esbuild index.js --platform=node --target=esnext --format=esm --outfile=out.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "commander": "^9.4.0",
+    "dotenv": "^16.0.2",
+    "luxon": "^3.0.3",
+    "mssql": "^9.0.1",
+    "sqlite3": "^5.1.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.15.8"
+  }
 }
