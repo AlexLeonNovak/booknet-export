@@ -1,6 +1,6 @@
-import Database from 'better-sqlite3';
+import sqlite3 from 'sqlite3';
 
-const db = new Database('log.db');
+const db = new sqlite3.Database('log.db');
 
 const now = new Date();
 const pad = n => n.toString().padStart(2, '0');
