@@ -29,6 +29,13 @@ export const getCount = async (tableName) => {
 	return recordset[0].c;
 }
 
+export const getByKeyVal = async (tableName, key, value) => {
+	const sql = `SELECT * FROM dbo.${tableName} WHERE ${key} = '${value}'`;
+	const connection = await mssql.connect(config);
+	const { recordset } = await connection.request().query(sql);
+	return recordset;
+}
+
 process.on('exit', async () => {
 	const connection = await mssql.connect(config);
 	await connection.close();

@@ -15,7 +15,6 @@ const { FETCH_LIMIT = 100, MSSQL_DEFAULT_TABLE } = process.env;
 const { source = MSSQL_DEFAULT_TABLE } = program.opts();
 
 const main = async () => {
-	try {
 		clog('Source data:', source);
 		const count = await getCount(source);
 		clog('Count:', count);
@@ -24,11 +23,33 @@ const main = async () => {
 		for (let page = 0; page < pages; page++) {
 			clog('Page:', page + 1, 'of pages:', pages);
 			clog('Getting data...');
-			const data = await getData(source, page * limit, limit);
-			clog('Done');
+			let data;
+			try {
+				data = await getData(source, page * limit, limit);
+				clog('Done');
+			} catch (e) {
+				clog('ERROR Message:', e.message);
+				clog('ERROR', e);
+				logger.error(e.message);
+				logger.error(JSON.stringify({ source, page, limit }))
+				continue;
+			}
+
 			const preparedData = prepareApiData(data);
 			clog('Update mautic contacts... (this can take a few minutes)');
-			const result = await updateBatchContacts(preparedData);
+			let result;
+			try {
+				result = await updateBatchContacts(preparedData);
+			} catch (e) {
+				clog('ERROR Message:', e.message);
+				clog('ERROR', e);
+				logger.error(e.message);
+				logger.error(JSON.stringify({
+					lastCustomerIds: preparedData.map(({ customerid }) => customerid)
+				}));
+				continue;
+			}
+
 			if ('contacts' in result) {
 				result.contacts.forEach((contact, index) => {
 					logger.log(JSON.stringify({
@@ -42,10 +63,5 @@ const main = async () => {
 			// logger.log(JSON.stringify(result));
 		}
 		clog('Finished');
-	} catch (e) {
-		clog('ERROR Message:', e.message);
-		clog('ERROR', e);
-		logger.error(e.message);
-	}
 }
 main().catch(console.error);
