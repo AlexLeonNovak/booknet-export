@@ -12,7 +12,7 @@ export const toMauticData = (fields) => ({
 	confirmation: fields['Consent'],
 	mobile: fields['Mobile'],
 	cansendsms: fields['Could_send_sms'],
-	email: fields['Email'],
+	email: fields['Email'] || fields['Customer_Id'] + '@email.com',
 	cansendemail: fields['Could_send_email'],
 	city: fields['City'],
 	preferredbranch12m: fields['preferredBranch_12mon'],
