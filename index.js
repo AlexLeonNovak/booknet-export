@@ -10,12 +10,13 @@ const program = new Command();
 program.option('-s, --source <table>', 'Source table');
 program.parse(process.argv);
 
-const { source } = program.opts();
+const { FETCH_LIMIT = 1000, MSSQL_DEFAULT_TABLE } = process.env;
 
-const { FETCH_LIMIT = 1000 } = process.env;
+const { source = MSSQL_DEFAULT_TABLE } = program.opts();
 
 const main = async () => {
 	try {
+		clog('Source data:', source);
 		const count = await getCount(source);
 		clog('Count:', count);
 		const limit = Number(FETCH_LIMIT);

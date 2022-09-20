@@ -1,6 +1,6 @@
 import mssql from 'mssql';
 
-const { MSSQL_SERVER, MSSQL_DATABASE, MSSQL_USER,	MSSQL_PASSWORD, MSSQL_DEFAULT_TABLE} = process.env;
+const { MSSQL_SERVER, MSSQL_DATABASE, MSSQL_USER,	MSSQL_PASSWORD } = process.env;
 
 const config = {
 	user: MSSQL_USER,
@@ -12,7 +12,7 @@ const config = {
 	},
 }
 
-export const getData = async (tableName = MSSQL_DEFAULT_TABLE, offset = 0, limit = 1000) => {
+export const getData = async (tableName, offset = 0, limit = 1000) => {
 	const sql = `SELECT * FROM dbo.${tableName} 
      ORDER BY Customer_Id
       OFFSET ${offset} ROWS
@@ -22,7 +22,7 @@ export const getData = async (tableName = MSSQL_DEFAULT_TABLE, offset = 0, limit
 	return recordset;
 }
 
-export const getCount = async (tableName = MSSQL_DEFAULT_TABLE) => {
+export const getCount = async (tableName) => {
 	const sql = `SELECT COUNT(*) c FROM dbo.${tableName}`;
 	const connection = await mssql.connect(config);
 	const { recordset } = await connection.request().query(sql);

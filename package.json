@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "start:s": "node index.js -s t1"
+    "start:delta": "node index.js -s MA_view_delta",
+    "start:full": "node index.js -s MA_view_full"
   },
   "keywords": [],
   "author": "",
