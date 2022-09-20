@@ -12,6 +12,6 @@ const instance = axios.create({
 
 
 export const updateBatchContacts = async (data) => {
-	const res = await instance.put('contacts/batch/edit', data);
+	const res = await instance.post('contacts/batch/new', data);
 	return res.data;
 }

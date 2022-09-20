@@ -10,7 +10,7 @@ const program = new Command();
 program.option('-s, --source <table>', 'Source table');
 program.parse(process.argv);
 
-const { FETCH_LIMIT = 1000, MSSQL_DEFAULT_TABLE } = process.env;
+const { FETCH_LIMIT = 100, MSSQL_DEFAULT_TABLE } = process.env;
 
 const { source = MSSQL_DEFAULT_TABLE } = program.opts();
 
@@ -29,13 +29,23 @@ const main = async () => {
 			const preparedData = prepareApiData(data);
 			clog('Update mautic contacts... (this can take a few minutes)');
 			const result = await updateBatchContacts(preparedData);
+			if ('contacts' in result) {
+				result.contacts.forEach((contact, index) => {
+					logger.log(JSON.stringify({
+						booknet_customerid: contact.fields.all.customerid,
+						mautic_id: contact.id,
+						statusCode: result.statusCodes[index]
+					}))
+				})
+			}
 			clog('Done');
-			logger.log(JSON.stringify(result));
+			// logger.log(JSON.stringify(result));
 		}
 		clog('Finished');
 	} catch (e) {
+		clog('ERROR Message:', e.message);
+		clog('ERROR', e);
 		logger.error(e.message);
-		clog('ERROR', e.message);
 	}
 }
 main().catch(console.error);
