@@ -45,6 +45,12 @@ export const toMauticData = (fields) => ({
 	kidsshop: fields['קניות ילדים'],
 	boughtthismonth: fields['BoughtthisMonth'],
 	monthsfromlastbuy: fields['MonthsSinceLastPurchase'],
+	birthdaythismonth9: fields['birthdaythismonth'],
+	dynamic: fields['Dynamic_1'],
+	dynamic1: fields['Dynamic_2'],
+	Joinlastmonth: fields['Join_Promoiton_this_month'],
+	endmonthdate: DateTime.now().endOf('month').toFormat('yyyy-MM-dd'),
+	datecreated: DateTime.now(),
 });
 
 export const prepareApiData = (data) => {

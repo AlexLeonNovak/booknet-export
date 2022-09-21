@@ -14,16 +14,19 @@ const config = {
 
 export const getData = async (tableName, offset = 0, limit = 1000) => {
 	const sql = `SELECT * FROM dbo.${tableName}
-     ORDER BY Customer_Id
-      OFFSET ${offset} ROWS
-    FETCH NEXT ${limit} ROWS ONLY;`;
+               WHERE (Email IS NOT NULL OR LTRIM(RTRIM(Email)) != '') AND Mobile IS NOT NULL
+     				   ORDER BY Customer_Id
+      				 OFFSET ${offset} ROWS FETCH NEXT ${limit} ROWS ONLY;
+	`;
 	const connection = await mssql.connect(config);
 	const { recordset } = await connection.request().query(sql);
 	return recordset;
 }
 
 export const getCount = async (tableName) => {
-	const sql = `SELECT COUNT(*) c FROM dbo.${tableName}`;
+	const sql = `SELECT COUNT(*) c FROM dbo.${tableName} 
+               WHERE (Email IS NOT NULL OR LTRIM(RTRIM(Email)) != '') AND Mobile IS NOT NULL
+  `;
 	const connection = await mssql.connect(config);
 	const { recordset } = await connection.request().query(sql);
 	return recordset[0].c;
