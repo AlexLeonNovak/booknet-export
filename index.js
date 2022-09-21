@@ -69,7 +69,7 @@ const main = async () => {
 						}
 						logResult.errors = errors;
 					}
-					logger.log(JSON.stringify(logResult));
+					'errors' in logResult ? logger.error(JSON.stringify(logResult)) : logger.log(JSON.stringify(logResult));
 				});
 			}
 
