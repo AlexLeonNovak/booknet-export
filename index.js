@@ -8,11 +8,12 @@ import { clog } from './utils.js'
 
 const program = new Command();
 program.option('-s, --source <table>', 'Source table');
+program.option('-p, --page <pageNumber>', 'Start from page');
 program.parse(process.argv);
 
 const { FETCH_LIMIT = 100, MSSQL_DEFAULT_TABLE } = process.env;
 
-const { source = MSSQL_DEFAULT_TABLE } = program.opts();
+const { source = MSSQL_DEFAULT_TABLE, page = 1 } = program.opts();
 
 const main = async () => {
 		clog('Source data:', source);
@@ -20,23 +21,23 @@ const main = async () => {
 		clog('Count:', count);
 		const limit = Number(FETCH_LIMIT);
 		const pages = Math.ceil(count / limit);
-		for (let page = 0; page < pages; page++) {
-			clog('Page:', page + 1, 'of pages:', pages);
+		for (let p = page - 1; p < pages; p++) {
+			clog('Page:', p + 1, 'of pages:', pages);
 			clog('Getting data...');
 			let data;
 			try {
-				data = await getData(source, page * limit, limit);
+				data = await getData(source, p * limit, limit);
 				clog('Done');
 			} catch (e) {
 				clog('ERROR Message:', e.message);
 				clog('ERROR', e);
 				logger.error(e.message);
-				logger.error(JSON.stringify({ source, page, limit }))
+				logger.error(JSON.stringify({ source, page: p, limit }))
 				continue;
 			}
 
 			const preparedData = prepareApiData(data);
-			clog('Update mautic contacts... (this can take a few minutes)');
+			clog('Update mautic contacts... (this can take a few seconds)');
 			let result;
 			try {
 				result = await updateBatchContacts(preparedData);

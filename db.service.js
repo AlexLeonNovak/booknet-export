@@ -13,7 +13,7 @@ const config = {
 }
 
 export const getData = async (tableName, offset = 0, limit = 1000) => {
-	const sql = `SELECT * FROM dbo.${tableName} 
+	const sql = `SELECT * FROM dbo.${tableName}
      ORDER BY Customer_Id
       OFFSET ${offset} ROWS
     FETCH NEXT ${limit} ROWS ONLY;`;

@@ -1,8 +1,10 @@
+import {DateTime} from 'luxon';
+
 export const toMauticData = (fields) => ({
 	customerid: fields['Customer_Id'],
 	firstname: fields['first_name_delivery'],
 	lastname: fields['Last_Name'],
-	birth_date: fields['Birth_Date'],
+	birth_date: DateTime.fromJSDate(fields['Birth_Date']).toFormat('yyyy-MM-dd'),
 	firstofbirthdaymonth: fields['BD_Promotion_Triger'],
 	lastpurchasetimedate: fields['Last_Purchase_Date'],
 	firstofjoindate: fields['Join_Promotion_Triger'],

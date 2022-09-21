@@ -1,11 +1,8 @@
 import sqlite3 from 'sqlite3';
+import {DateTime} from 'luxon';
 
 const db = new sqlite3.Database('log.db');
-
-const now = new Date();
-const pad = n => n.toString().padStart(2, '0');
-const tableName = `log_${now.getFullYear()}_${pad(now.getMonth() + 1)}_${pad(now.getDate())}`;
-
+const tableName = `log_${DateTime.now().toFormat('yyyy_MM_dd')}`;
 
 db.exec(`CREATE TABLE IF NOT EXISTS ${tableName} (
   id INTEGER PRIMARY KEY,
