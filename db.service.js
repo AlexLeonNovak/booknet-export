@@ -30,7 +30,9 @@ export const getCount = async (tableName) => {
 }
 
 export const getByKeyVal = async (tableName, key, value) => {
-	const sql = `SELECT * FROM dbo.${tableName} WHERE ${key} = '${value}'`;
+	const sql = `SELECT * FROM dbo.${tableName} 
+         WHERE ${key} IN ('${Array.isArray(value) ? value.join("','") : value}')
+	`;
 	const connection = await mssql.connect(config);
 	const { recordset } = await connection.request().query(sql);
 	return recordset;

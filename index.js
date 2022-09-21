@@ -51,15 +51,28 @@ const main = async () => {
 				continue;
 			}
 
-			if ('contacts' in result) {
-				result.contacts.forEach((contact, index) => {
-					logger.log(JSON.stringify({
-						booknet_customerid: contact.fields.all.customerid,
-						mautic_id: contact.id,
-						statusCode: result.statusCodes[index]
-					}))
-				})
+			if ('statusCodes' in result) {
+				result.statusCodes.forEach((code, index) => {
+					const logResult = {
+						booknetCustomerId: preparedData[index].customerid,
+						statusCode: code
+					};
+					if ([200, 201].includes(code)) {
+						logResult.mauticId = result.contacts[index].id;
+					} else if ('errors' in result) {
+						const errors = [];
+						for (const field in result.errors[index].details) {
+							errors.push({
+								errorMessages: result.errors[index].details[field],
+								booknetValue: preparedData[index][field],
+							})
+						}
+						logResult.errors = errors;
+					}
+					logger.log(JSON.stringify(logResult));
+				});
 			}
+
 			clog('Done');
 			// logger.log(JSON.stringify(result));
 		}
