@@ -1,10 +1,11 @@
 import 'dotenv/config'
 import { Command } from 'commander/esm.mjs'
-import {getCount, getData} from './db.service.js';
-import { prepareApiData } from './data.adapter.js';
-import { updateBatchContacts } from './mautic.api.js';
-import { logger } from './logger.js';
-import { clog } from './utils.js'
+import { getCount, getData } from './services/db.service.js';
+import { prepareApiData } from './utils/data.adapter.js';
+import { updateBatchContacts } from './services/mautic-api.service.js';
+import { logger } from './utils/logger.js';
+import { clog } from './utils/utils.js'
+import { sendReport } from './utils/report.js';
 
 const program = new Command();
 program.option('-s, --source <table>', 'Source table');
@@ -69,13 +70,14 @@ const main = async () => {
 						}
 						logResult.errors = errors;
 					}
-					'errors' in logResult ? logger.error(JSON.stringify(logResult)) : logger.log(JSON.stringify(logResult));
+					'errors' in logResult
+						? logger.error(JSON.stringify(logResult))
+						: logger.log(JSON.stringify(logResult));
 				});
 			}
-
 			clog('Done');
-			// logger.log(JSON.stringify(result));
 		}
+		await sendReport();
 		clog('Finished');
 }
 main().catch(console.error);
