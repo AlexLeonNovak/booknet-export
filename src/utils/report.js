@@ -16,7 +16,7 @@ export const sendReport = async () => {
 			<table>
 			<thead>
 				<tr>
-		      <th>Date<th>
+		      <th>Date</th>
 		      <th>Message</th>
 		    </tr>
 			</thead>
