@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node src/index.js",
     "start:delta": "node src/index.js -s MA_view_delta",
-    "start:full": "node src/index.js -s MA_view_full"
+    "start:full": "node src/index.js -s MA_view_full",
+    "start:clear": "node src/cleaner.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "luxon": "^3.0.3",
     "mssql": "^9.0.1",
     "nodemailer": "^6.7.8",
+    "qs": "^6.11.0",
     "sqlite": "^4.1.2",
     "sqlite3": "^5.1.1"
   }
