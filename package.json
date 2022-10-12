@@ -8,7 +8,8 @@
     "start": "node src/index.js",
     "start:delta": "node src/index.js -s MA_view_delta",
     "start:full": "node src/index.js -s MA_view_full",
-    "start:clear": "node src/cleaner.js"
+    "start:clear": "node src/cleaner.js",
+    "test:email": "node src/email.js"
   },
   "keywords": [],
   "author": "",
