@@ -50,9 +50,9 @@ export const toMauticData = (fields) => ({
 	dynamic1: fields['Dynamic_2'],
 	joinlastmonth: fields['Join_Promoiton_this_month'],
 	endmonthdate: DateTime.now().endOf('month').toFormat('yyyy-MM-dd'),
-	datecreated: fields['creationdate'],
-	updatedate: fields['updatedate'],
-	controlgroup: fields['controlgroup'],
+	datecreated: fields['Creation_Date'],
+	updatedate: fields['Update_Date'],
+	controlgroup: fields['Control_Group'],
 });
 
 export const prepareApiData = (data) => {
