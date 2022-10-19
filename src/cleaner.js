@@ -18,7 +18,7 @@ const main = async () => {
 			}).map(({id}) => id);
 			clog('Count ids:', ids.length);
 			if (ids.length) {
-				start = ids[ids.length - 1];
+				start = start + ids.length;
 			}
 			contactIds = [...contactIds, ...ids];
 			if (contactIds.length >= 10000) {
